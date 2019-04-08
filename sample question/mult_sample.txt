@@ -1,0 +1,8 @@
+type: mult
+topic: Array Declaration
+ques: Which of these is an incorrect array declaration?
+opt: int arr[] = new int[5]
+opt: int[] arr = new int[5]
+opt: int arr[] = new int[5]
+opt: int arr[] = int[5] new
+key: int[] arr = new int[5]

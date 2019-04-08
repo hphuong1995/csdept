@@ -1,0 +1,4 @@
+type: shor
+topic: String Method
+ques: Fill in the blank that temp2 store value 'end of':\nString temp = 'To the end of this line';\nString temp2 = temp._____;
+key: substring(6,11)
