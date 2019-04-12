@@ -39,6 +39,7 @@ router.post('/api/v1/login',
   passport.authenticate('local', { failureRedirect: 'login' }),
   function(req, res) {
     delete req.user.password;
+    console.log("here");
     req.user.success = true;
     res.status(200).send(req.user);
   });

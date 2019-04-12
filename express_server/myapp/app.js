@@ -33,10 +33,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use("/",express.static(path.join(__dirname, 'public')));
+
 
 var options = {
-  host: "localhost",
+  host: "138.49.184.135",
   user: "root",
   password: "Hphuong131464",
   database: "csdept",
@@ -73,12 +75,12 @@ app.use('/api/v1/', route);
 // passport strategy
 passport.use(new LocalStrategy(
   function(username, password, done) {
-
+    console.log("there");
     db.query('SELECT * FROM User WHERE username = ?', [username] , (err, results, fields)=>{
 
       if(err) done(err);
 
-      if(results.length === 0){
+      if(results && results.length === 0){
         done(null,false);
       }
       else{
