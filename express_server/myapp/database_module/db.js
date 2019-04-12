@@ -2,7 +2,7 @@ var con = require('./dbConnect');
 
 module.exports.userRegister = (username, password, email, fullName, type, callback) => {
   //console.log(password);
-  var query = "INSERT INTO USER ( username, email, password, fullName, type) VALUES (?,?,?,?,?)";
+  var query = "INSERT INTO User ( username, email, password, fullName, type) VALUES (?,?,?,?,?)";
   con.query(query,[username, email,password,fullName, type], function(errors, results, field){
     if(errors) throw errors;
     callback({'valid': true}, undefined);
