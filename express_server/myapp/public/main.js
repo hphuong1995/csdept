@@ -278,7 +278,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='container' style='margin-top: 10px;'>\n  <table class=\"table table-striped\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Course Name</th>\n        <th scope=\"col\">Instructor</th>\n        <th scope=\"col\"></th>\n      </tr>\n    </thead>\n    <tbody *ngIf=\"courses\">\n      <tr scope=\"row\" *ngFor=\"let course of courses\">\n        <td>{{course.cname}}</td>\n        <td>{{course.instr}}</td>\n        <td align=\"right\">\n          <button type=\"button\" class=\"btn btn-outline-success\" [routerLink]=\"[course.cid, 'topics']\">Select</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<div class='container' style='margin-top: 10px;'>\n  <table class=\"table table-striped\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Course Name</th>\n        <th scope=\"col\">Instructor</th>\n        <th scope=\"col\"></th>\n      </tr>\n    </thead>\n    <tbody *ngIf=\"courses\">\n      <tr scope=\"row\" *ngFor=\"let course of courses\">\n        <td>{{course.cname}}</td>\n        <td>{{course.instr}}</td>\n        <td align=\"right\">\n          <button type=\"button\" class=\"btn btn-outline-success\" (click)=\"setCurrentCourses(course.cname,course.id)\" [routerLink]=\"[course.cid, 'topics']\">Select</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <button id=\"next\" class=\"btn btn-primary\" style='margin-top: 10px;' (click)=\"back()\">Back</button>\n</div>\n"
 
 /***/ }),
 
@@ -296,12 +296,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../data.service */ "./src/app/data.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
 
 
 
 
 var CoursesComponent = /** @class */ (function () {
-    function CoursesComponent(data, router) {
+    function CoursesComponent(_location, data, router) {
+        this._location = _location;
         this.data = data;
         this.router = router;
     }
@@ -318,13 +321,20 @@ var CoursesComponent = /** @class */ (function () {
             }
         });
     };
+    CoursesComponent.prototype.setCurrentCourses = function (courseName, cid) {
+        localStorage.setItem("currentCourse", courseName);
+    };
+    CoursesComponent.prototype.back = function () {
+        this._location.back();
+    };
     CoursesComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-courses',
             template: __webpack_require__(/*! ./courses.component.html */ "./src/app/courses/courses.component.html"),
             styles: [__webpack_require__(/*! ./courses.component.css */ "./src/app/courses/courses.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"],
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"],
+            _data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], CoursesComponent);
     return CoursesComponent;
@@ -451,7 +461,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <h4>Login</h4>\n  <form [formGroup]=\"loginForm\" (ngSubmit)=\"onSubmit()\">\n    <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input type=\"text\" formControlName=\"username\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.username.errors }\" />\n        <div *ngIf=\"submitted && f.username.errors\" class=\"invalid-feedback\">\n            <div *ngIf=\"f.username.errors.required\">Username is required</div>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <label for=\"password\">Password</label>\n        <input type=\"password\" formControlName=\"password\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.password.errors }\" />\n        <div *ngIf=\"submitted && f.password.errors\" class=\"invalid-feedback\">\n            <div *ngIf=\"f.password.errors.required\">Password is required</div>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <button [disabled]=\"loading\" class=\"btn btn-primary\">Login</button>\n        <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\n        <a [routerLink]=\"['/register']\" class=\"btn btn-link\">Register</a>\n    </div>\n  </form>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <h4>Login</h4>\n  <form [formGroup]=\"loginForm\" (ngSubmit)=\"onSubmit()\">\n    <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input type=\"text\" formControlName=\"username\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.username.errors }\" />\n        <div *ngIf=\"submitted && f.username.errors\" class=\"invalid-feedback\">\n            <div *ngIf=\"f.username.errors.required\">Username is required</div>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <label for=\"password\">Password</label>\n        <input type=\"password\" formControlName=\"password\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.password.errors }\" />\n        <div *ngIf=\"submitted && f.password.errors\" class=\"invalid-feedback\">\n            <div *ngIf=\"f.password.errors.required\">Password is required</div>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <button class=\"btn btn-primary\">Login</button>\n        <a [routerLink]=\"['/register']\" class=\"btn btn-link\">Register</a>\n    </div>\n  </form>\n</div>\n"
 
 /***/ }),
 
@@ -610,7 +620,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='container'id =\"ques\" style='margin-top: 10px; white-space:pre-wrap;' *ngIf=\"currentQuestion\">\n  <h4>Question:</h4>\n  <div *ngIf=\"currentQuestion.type === 'mult'\">\n    <form>\n      <h6>{{currentQuestion.content}}</h6>\n      <div class=\"form-check\" *ngFor=\"let option of currentQuestion.options\">\n        <input class=\"form-check-input\" type=\"radio\"  id=\"{{option}}\" name=\"{{currentQuestion.question}}\">\n        <label class=\"form-check-label\" for=\"{{option}}\">{{option}}</label>\n      </div>\n    </form>\n  </div>\n\n  <div *ngIf=\"currentQuestion.type === 'code'\">\n    <h6>{{currentQuestion.question}}</h6>\n    <form>\n      <div class=\"form-group\">\n        <label for=\"{{currentQuestion.question}}\">Answer:</label>\n        <textarea class=\"form-control\" id=\"{{currentQuestion.question}}\" rows=\"5\"></textarea>\n      </div>\n    </form>\n  </div>\n\n  <div *ngIf=\"currentQuestion.type === 'fill'\">\n    <h6>{{currentQuestion.question}}</h6>\n    <form>\n      <div class=\"form-group\">\n        <label for=\"{{currentQuestion.question}}\">Answer:</label>\n        <input type=\"text\" class=\"form-control\" id=\"{{currentQuestion.question}}\">\n      </div>\n    </form>\n  </div>\n\n  <div *ngIf=\"currentQuestion.typeId === 1\">\n    <h6 >{{currentQuestion.content}}</h6>\n    <form>\n      <div class=\"form-group\">\n        <label for=\"{{currentQuestion.question}}\">Answer:</label>\n        <textarea class=\"form-control\" id=\"{{currentQuestion.qid}}\" rows=\"3\"></textarea>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"alert alert-success\" *ngIf=\"correctAnswer === 2\">\n    <strong>Correct!</strong>\n  </div>\n\n  <div class=\"alert alert-danger\" *ngIf=\"correctAnswer === 1\">\n    <strong>Incorrect!</strong>\n  </div>\n  <div>\n    <button (click)=\"submit()\" type=\"submit\" class=\"btn btn-primary\" style='margin-top: 10px;'>Submit</button>\n  </div>\n  <button id=\"next\" (click)=\"nextQuestion()\" class=\"btn btn-primary\" style='margin-top: 10px;' *ngIf=\"curQuesNum < questionSet.length - 1\">Next Question</button>\n  <button id=\"backToTopic\" routerLink=\"../..\" class=\"btn btn-primary\" style='margin-top: 10px;' *ngIf=\"curQuesNum === questionSet.length - 1\">Topic List</button>\n</div>\n"
+module.exports = "<div class='container'id =\"ques\" style='margin-top: 10px; white-space:pre-wrap;' >\n  <h4>Course: {{currentCourse}} - Topic: {{currentTopic}}</h4>\n\n  <div *ngIf=\"currentQuestion\">\n    <h5 >Question ( {{displayCurrentQues}} / {{questionSet.length}} ):</h5>\n    <form [formGroup]=\"answerForm\" *ngIf=\"currentQuestion\" >\n      <div *ngIf=\"currentQuestion.type === '2'\">\n        <h6 > Hello</h6>\n          <div class=\"form-group\">\n            <label for=\"{{currentQuestion.question}}\">Answer:</label>\n            <input type=\"text\" class=\"form-control\" id=\"{{currentQuestion.question}}\">\n          </div>\n      </div>\n\n      <div *ngIf=\"currentQuestion.typeId === 1\">\n        <h6 [innerHTML]=\"currentQuestion.content\"></h6>\n          <div class=\"form-group\">\n            <label for=\"{{currentQuestion.question}}\">Answer:</label>\n            <textarea formControlName=\"answer\" class=\"form-control\" id=\"{{currentQuestion.qid}}\" rows=\"3\"></textarea>\n          </div>\n      </div>\n    </form>\n\n    <div class=\"alert alert-success\" *ngIf=\"correctAnswer === 2\">\n      <strong>Correct!</strong>\n    </div>\n\n    <div class=\"alert alert-danger\" *ngIf=\"correctAnswer === 1\">\n      <strong>Incorrect!</strong>\n    </div>\n    <div>\n      <button (click)=\"submit()\" type=\"submit\" class=\"btn btn-primary\" style='margin-top: 10px;' *ngIf=\"currentQuestion\">Submit</button>\n    </div>\n    <button id=\"next\" (click)=\"nextQuestion()\" class=\"btn btn-primary\" style='margin-top: 10px;' *ngIf=\"(curQuesNum < questionSet.length - 1) && currentQuestion\">Next Question</button>\n    <button id=\"backToTopic\" routerLink=\"../..\" class=\"btn btn-primary\" style='margin-top: 10px;' *ngIf=\"(curQuesNum === questionSet.length - 1) && currentQuestion\">Topic List</button>\n  </div>\n  <div>\n    <button id=\"next\" class=\"btn btn-primary\" style='margin-top: 10px;' (click)=\"back()\">Back</button>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -628,59 +638,67 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../data.service */ "./src/app/data.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
+
 
 
 
 
 var QuestionsComponent = /** @class */ (function () {
-    /*
-    questionSet = [{ type: "mult",
-                          question: "Which of these is an incorrect array declaration?",
-                          options: ["A) int arr[] = new int[5]",
-                                  "B) int [] arr = new int[5]",
-                                  "C) int arr[] = new int[5]",
-                                  "D) int arr[] = int [5] new"]},
-                        { type: "code",
-                          question: "Declare variable type int; variable name “num” and in the same statement, assign num with value 10" },
-                        { type: "fill",
-                          question: "Fill in the blank that temp2 store value 'end of':\nString temp = 'To the end of this line';\nString temp2 = temp.______;"},
-                        { type: "shor",
-                          question: "Which method to use when comparing 2 String?"},
-                        { type: "spec",
-                          question: "Specify output of this program:\npublic class A {\n    int i = 10;\n}\npublic class B extends A {\n   int i = 20;\n } \npublic class MainClass {    \n public static void main(String[] args)    {      \n   A a = new B();        \n  System.out.println(a.i);    \n  } \n}\n"}
-                        ];
-    */
-    function QuestionsComponent(data, route) {
+    function QuestionsComponent(_location, formBuilder, data, route) {
+        this._location = _location;
+        this.formBuilder = formBuilder;
         this.data = data;
         this.route = route;
         this.curQuesNum = 0;
         this.correctAnswer = 0;
+        this.displayCurrentQues = 1;
     }
+    Object.defineProperty(QuestionsComponent.prototype, "f", {
+        get: function () { return this.answerForm.controls; },
+        enumerable: true,
+        configurable: true
+    });
     QuestionsComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.answerForm = this.formBuilder.group({
+            answer: [''],
+        });
+        this.currentTopic = JSON.parse(JSON.stringify(localStorage.getItem('currentTopic')));
+        this.currentCourse = JSON.parse(JSON.stringify(localStorage.getItem('currentCourse')));
         this.data.getQuestions(this.route.snapshot.params['cid'], this.route.snapshot.params['tid']).subscribe(function (data) {
             _this.questionSet = data;
-            _this.currentQuestion = _this.questionSet[_this.curQuesNum];
-            //console.log(this.questionSet[0]);
+            //console.log(this.questionSet[0].content);
             _this.questionSet.forEach(function (question) {
-                question.content = question.content.replace("\\n", "");
-                //console.log(question.content.indexOf("\\n"));
+                question.content = "<pre>" + question.content.replace(/[\\]n/g, '<br>') + "<pre>";
+                //question.content = this.domSanitizer.bypassSecurityTrustHtml(question.content);
             });
+            _this.currentQuestion = _this.questionSet[_this.curQuesNum];
         });
     };
     QuestionsComponent.prototype.nextQuestion = function () {
         this.curQuesNum = this.curQuesNum + 1;
         this.currentQuestion = this.questionSet[this.curQuesNum];
         this.correctAnswer = 0;
+        this.displayCurrentQues = this.displayCurrentQues + 1;
+        this.f.answer.setValue('');
+        this.f.answer.enable();
     };
     QuestionsComponent.prototype.submit = function () {
-        var answer = document.getElementById(this.currentQuestion.qid).value;
+        var answer = this.f.answer.value;
+        answer = answer.trim();
         if (answer === this.currentQuestion.key) {
+            this.f.answer.disable();
             this.correctAnswer = 2;
         }
         else {
             this.correctAnswer = 1;
         }
+    };
+    QuestionsComponent.prototype.back = function () {
+        this._location.back();
     };
     QuestionsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -688,7 +706,9 @@ var QuestionsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./questions.component.html */ "./src/app/questions/questions.component.html"),
             styles: [__webpack_require__(/*! ./questions.component.css */ "./src/app/questions/questions.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"],
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common__WEBPACK_IMPORTED_MODULE_5__["Location"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"],
+            _data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
     ], QuestionsComponent);
     return QuestionsComponent;
@@ -812,7 +832,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='container' style='margin-top: 10px;'>\n  <table class=\"table table-striped\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Topic</th>\n        <th scope=\"col\"></th>\n      </tr>\n    </thead>\n    <tbody *ngIf=\"topics\">\n      <tr scope=\"row\" *ngFor=\"let topic of topics\">\n        <td>{{topic.tname}}</td>\n        <td align=\"right\">\n          <button type=\"button\" class=\"btn btn-outline-success\" [routerLink]=\"[topic.tid, 'questions']\">Select</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<div class='container' style='margin-top: 10px;'>\n  <h5>Course: {{currentCourse}}</h5>\n  <table class=\"table table-striped\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Topic</th>\n        <th scope=\"col\"></th>\n      </tr>\n    </thead>\n    <tbody *ngIf=\"topics\">\n      <tr scope=\"row\" *ngFor=\"let topic of topics\">\n        <td>{{topic.tname}}</td>\n        <td align=\"right\">\n          <button type=\"button\" class=\"btn btn-outline-success\" (click)=\"setCurrentTopic(topic.tname)\" [routerLink]=\"[topic.tid, 'questions']\">Select</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <button id=\"next\" class=\"btn btn-primary\" style='margin-top: 10px;' (click)=\"back()\">Back</button>\n</div>\n"
 
 /***/ }),
 
@@ -830,21 +850,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../data.service */ "./src/app/data.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
 
 
 
 
 var TopicsComponent = /** @class */ (function () {
-    function TopicsComponent(data, route) {
+    function TopicsComponent(_location, data, route) {
+        this._location = _location;
         this.data = data;
         this.route = route;
     }
     TopicsComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.currentCourse = JSON.parse(JSON.stringify(localStorage.getItem('currentCourse')));
         console.log();
         this.data.getTopics(this.route.snapshot.params['cid']).subscribe(function (data) {
             _this.topics = data;
         });
+    };
+    TopicsComponent.prototype.setCurrentTopic = function (currentTopic) {
+        localStorage.setItem("currentTopic", currentTopic);
+    };
+    TopicsComponent.prototype.back = function () {
+        this._location.back();
     };
     TopicsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -852,7 +882,8 @@ var TopicsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./topics.component.html */ "./src/app/topics/topics.component.html"),
             styles: [__webpack_require__(/*! ./topics.component.css */ "./src/app/topics/topics.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"],
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"],
+            _data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
     ], TopicsComponent);
     return TopicsComponent;

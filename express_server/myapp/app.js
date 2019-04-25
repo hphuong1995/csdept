@@ -34,11 +34,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+function root( req, res, next ) {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+}
+
 app.use("/",express.static(path.join(__dirname, 'public')));
 
 
 var options = {
-  host: "138.49.184.181",
+  host: "localhost",
   user: "root",
   password: "Hphuong131464",
   database: "csdept",
@@ -71,6 +75,10 @@ app.use(expressValidator());
 //Route
 app.use('/', auth);
 app.use('/api/v1/', route);
+app.use("/**", (req, res, next) => {
+  root( req, res, next );
+});
+
 
 // passport strategy
 passport.use(new LocalStrategy(
