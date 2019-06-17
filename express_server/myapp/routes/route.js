@@ -11,8 +11,8 @@ router.get('/courses', function(req, res, next) {
 });
 
 router.get('/courses/:cid/topics', function(req, res, next) {
-  console.log("reach");
-  db.getAllTopics( (topics)=>{
+
+  db.getAllTopics( req.params.cid, (topics)=>{
     console.log(topics);
     res.status(200).send(topics);
   });

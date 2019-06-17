@@ -9,8 +9,8 @@ module.exports.userRegister = (username, password, email, fullName, type, callba
   });
 }
 
-exports.getAllTopics = (callback) => {
-	var query = "Select * From Topic";
+exports.getAllTopics = (cid, callback) => {
+	var query = "Select * From Topic JOIN course_topic ON tid = topic_tid WHERE course_cid =" + cid;
 
   con.query(query, (err, results) => {
     if(err) {
@@ -38,7 +38,7 @@ exports.getAllQuestionByTopicId = (courseId, topicId, callback) => {
 }
 
 exports.getAllCourses = function(cb){
-	var query = "Select * From Course";
+	var query = "Select cid, course_name, fullName From course JOIN user ON user_uid = uid";
 	con.query(query, function(err, res, fields){
     console.log(res);
 	  cb(res);

@@ -42,7 +42,7 @@ app.use("/",express.static(path.join(__dirname, 'public')));
 
 
 var options = {
-  host: "138.49.184.181",
+  host: "localhost",
   user: "root",
   password: "Hphuong131464",
   database: "csdept",
@@ -72,9 +72,10 @@ app.use(function (req, res, next){
 
 app.use(expressValidator());
 
+
 //Route
 app.use('/', auth);
-app.use('/api/v1/', route);
+app.use('/api/v1/',  route);
 app.use("/**", (req, res, next) => {
   root( req, res, next );
 });
@@ -83,7 +84,6 @@ app.use("/**", (req, res, next) => {
 // passport strategy
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log("there");
     db.query('SELECT * FROM User WHERE username = ?', [username] , (err, results, fields)=>{
 
       if(err) done(err);
