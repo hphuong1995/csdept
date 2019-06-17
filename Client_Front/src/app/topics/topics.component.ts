@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
+import { UserService } from '../user.service';
 
 
 @Component({
@@ -12,16 +13,18 @@ import {Location} from '@angular/common';
 export class TopicsComponent implements OnInit {
   topics: Object;
   currentCourse : string;
+  currentInstructorId : string;
 
   constructor( private _location: Location,
-              private data: DataService,
-              private route:ActivatedRoute) { }
+              private dataService: DataService,
+              private route:ActivatedRoute,
+              private userService: UserService) { }
 
   ngOnInit() {
-    this.currentCourse = JSON.parse(JSON.stringify(localStorage.getItem('currentCourse')));
-    console.log();
-    this.data.getTopics(this.route.snapshot.params['cid']).subscribe(data => {
+    this.currentCourse = JSON.parse(localStorage.getItem('currentCourse'));
+    this.dataService.getTopics(this.route.snapshot.params['cid']).subscribe(data => {
       this.topics = data;
+      console.log(this.currentCourse);
     })
   }
 

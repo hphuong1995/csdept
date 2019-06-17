@@ -37,7 +37,7 @@ exports.getAllQuestionByTopicId = (courseId, topicId, callback) => {
 }
 
 exports.getAllCourses = function(callback){
-	var query = "Select cid, course_name, fullName From course JOIN user ON user_uid = uid";
+	var query = "Select cid, course_name, fullName, uid From course JOIN user ON user_uid = uid";
 	con.query(query, function(err, res, fields){
     if(err){
       callback(null, err);

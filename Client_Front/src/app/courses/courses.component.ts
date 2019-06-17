@@ -28,8 +28,8 @@ export class CoursesComponent implements OnInit {
     })
   }
 
-  setCurrentCourses(courseName : string, cid: string){
-    localStorage.setItem("currentCourse", courseName);
+  setCurrentCourses(course){
+    localStorage.setItem("currentCourse", JSON.stringify(course));
   }
 
   back() {
