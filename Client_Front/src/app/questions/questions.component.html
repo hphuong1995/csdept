@@ -1,0 +1,44 @@
+<div class='container'id ="ques" style='margin-top: 10px; white-space:pre-wrap;' >
+  <h4>Course: {{currentCourse}} - Topic: {{currentTopic}}</h4>
+
+  <div *ngIf="currentQuestion">
+    <h5 >Question ( {{displayCurrentQues}} / {{questionSet.length}} ):</h5>
+    <form [formGroup]="answerForm" *ngIf="currentQuestion" >
+
+      <div *ngIf="currentQuestion.type_id === 1">
+        <h6 [innerHTML]="currentQuestion.content"></h6>
+          <div class="form-group">
+            <label for="{{currentQuestion.question}}">Answer:</label>
+            <div *ngFor="let option of currentOptionsSet">
+              <input (click)="selectOption($event.target.value)" class="form-group" value="{{option.opt}}" type="radio" name="option" />
+              {{option.opt}}
+            </div>
+          </div>
+      </div>
+
+      <div *ngIf="currentQuestion.type_id === 0">
+        <h6 [innerHTML]="currentQuestion.content"></h6>
+          <div class="form-group">
+            <label for="{{currentQuestion.question}}">Answer:</label>
+            <textarea formControlName="answer" class="form-control" id="{{currentQuestion.qid}}" rows="3"></textarea>
+          </div>
+      </div>
+    </form>
+
+    <div class="alert alert-success" *ngIf="correctAnswer === 2">
+      <strong>Correct!</strong>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="correctAnswer === 1">
+      <strong>Incorrect!</strong>
+    </div>
+    <div>
+      <button (click)="submit()" type="submit" class="btn btn-primary" style='margin-top: 10px;' *ngIf="currentQuestion">Submit</button>
+    </div>
+    <button id="next" (click)="nextQuestion()" class="btn btn-primary" style='margin-top: 10px;' *ngIf="(curQuesNum < questionSet.length - 1) && currentQuestion">Next Question</button>
+    <button id="backToTopic" routerLink="../.." class="btn btn-primary" style='margin-top: 10px;' *ngIf="(curQuesNum === questionSet.length - 1) && currentQuestion">Topic List</button>
+  </div>
+  <div>
+    <button class="btn btn-primary" style='margin-top: 10px;' (click)="back()">Back</button>
+  </div>
+</div>

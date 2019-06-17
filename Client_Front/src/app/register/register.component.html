@@ -1,0 +1,43 @@
+<div class="container">
+  <h4>Register</h4>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+            <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="re_password">Re-Password</label>
+        <input type="password" formControlName="re_password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.re_password.errors }" />
+        <div *ngIf="submitted && f.re_password.errors" class="invalid-feedback">
+            <div *ngIf="f.re_password.errors.required">Re-Password is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="re_password">Full Name</label>
+        <input type="text" formControlName="fullName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.re_password.errors }" />
+        <div *ngIf="submitted && f.fullName.errors" class="invalid-feedback">
+            <div *ngIf="f.fullName.errors.required">Full Name is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">Register</button>
+    </div>
+  </form>
+</div>

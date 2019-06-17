@@ -1,0 +1,21 @@
+<div class='container' style='margin-top: 10px;'>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Course Name</th>
+        <th scope="col">Instructor</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody *ngIf="courses">
+      <tr scope="row" *ngFor="let course of courses">
+        <td>{{course.course_name}}</td>
+        <td>{{course.fullName}}</td>
+        <td align="right">
+          <button type="button" class="btn btn-outline-success" (click)="setCurrentCourses(course.course_name,course.cid)" [routerLink]="[course.cid, 'topics']">Select</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button id="next" class="btn btn-primary" style='margin-top: 10px;' (click)="back()">Back</button>
+</div>
