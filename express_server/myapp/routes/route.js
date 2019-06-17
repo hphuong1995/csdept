@@ -12,23 +12,40 @@ router.get('/courses', function(req, res, next) {
 
 router.get('/courses/:cid/topics', function(req, res, next) {
 
-  db.getAllTopics( req.params.cid, (topics)=>{
-    console.log(topics);
-    res.status(200).send(topics);
+  db.getAllTopics( req.params.cid, (topics,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(topics);
+    }
   });
 });
 
 router.get('/courses/:cid/topics/:tid/questions', function(req, res, next) {
-  console.log("reach");
-  db.getAllQuestionByTopicId(req.params.cid, req.params.tid, (topics)=>{
-    console.log(topics);
-    res.status(200).send(topics);
+  db.getAllQuestionByTopicId(req.params.cid, req.params.tid, (questions,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(questions);
+    }
+  });
+});
+
+router.get('/questions/:qid/options', function(req, res, next) {
+  db.getOptionsOfMultQuestion(req.params.qid, (options,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(options);
+    }
   });
 });
 
 function authenticationMiddleware(){
   return (req,res,next) =>{
-    console.log( `req.session.passport.user : ${JSON.stringify(req.session.passport)}`);
     if( req.isAuthenticated()) return next();
     // somehow redirect to login
     res.status(400).send({redirect: "/login"});

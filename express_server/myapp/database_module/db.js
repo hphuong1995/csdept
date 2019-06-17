@@ -23,7 +23,7 @@ exports.getAllTopics = (cid, callback) => {
 }
 
 exports.getAllQuestionByTopicId = (courseId, topicId, callback) => {
-	let query = "Select * From Question Where cid ='" + courseId + "'" + " AND tid ='" + topicId + "'";
+	let query = "Select * From question WHERE topic_question_tid ='" + topicId + "'";
 
   console.log(query);
   con.query(query, (err, results) => {
@@ -31,17 +31,32 @@ exports.getAllQuestionByTopicId = (courseId, topicId, callback) => {
         callback(undefined, new Error(err.message, -10));
         return;
     }
-    console.log(results);
     //console.log('passhash: ' + passhash);
     callback(results);
   });
 }
 
-exports.getAllCourses = function(cb){
+exports.getAllCourses = function(callback){
 	var query = "Select cid, course_name, fullName From course JOIN user ON user_uid = uid";
 	con.query(query, function(err, res, fields){
-    console.log(res);
-	  cb(res);
+    if(err){
+      callback(null, err);
+    }
+    else{
+      callback(res);
+    }
+	});
+}
+
+exports.getOptionsOfMultQuestion = function(qid, callback){
+	var query = "Select * FROM options WHERE question_qid =" + qid;
+	con.query(query, function(err, res, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      callback(res);
+    }
 	});
 }
 
