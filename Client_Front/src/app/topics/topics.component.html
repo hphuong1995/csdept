@@ -5,18 +5,18 @@
       <tr>
         <th scope="col">Topic</th>
         <th *ngIf="this.userService.getCurrentUser().uid === this.currentCourse.uid" scope="col">Available Date</th>
-        <th  *ngIf="this.userService.getCurrentUser().uid === this.currentCourse.uid" scope="col">
-          <button id="addTopic" class="btn btn-primary"  data-toggle="modal" data-target="#addTopicModal">Add Topic</button>
+        <th   scope="col">
+          <button *ngIf="this.userService.getCurrentUser().uid === this.currentCourse.uid" id="addTopic" class="btn btn-primary"  data-toggle="modal" data-target="#addTopicModal">Add Topic</button>
         </th>
       </tr>
     </thead>
     <tbody *ngIf="topics">
-      <tr scope="row" *ngFor="let topic of topics">
-        <td>{{topic.topic_name}}</td>
+      <tr scope="row" *ngFor="let topic of topics" >
+        <td *ngIf="checkAppearance(topic)">{{topic.topic_name}}</td>
         <td *ngIf="this.userService.getCurrentUser().uid === this.currentCourse.uid">
           {{topic.formatedDate}}
         </td>
-        <td >
+        <td  *ngIf="checkAppearance(topic)">
           <button type="button" class="btn btn-outline-success" (click)="setCurrentTopic(topic.topic_name)" [routerLink]="[topic.tid, 'questions']">Select</button>
           <button type="button" data-toggle="modal" data-target="#editTopicModal" class="btn btn-outline-success" (click)="editTopic(topic)">Edit</button>
         </td>

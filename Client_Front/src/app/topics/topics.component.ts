@@ -103,12 +103,10 @@ export class TopicsComponent implements OnInit {
   }
 
   topicDateChange(type: string, event: MatDatepickerInputEvent<Date>): void {
-    console.log(event.value);
     this.edittingTopic.date = event.value;
   }
 
   editTopic(topic){
-    console.log(topic);
     this.edittingTopic = topic;
     this.editTopicForm = this.formBuilder.group({
       topic_name: [this.edittingTopic.topic_name, Validators.required],
@@ -123,6 +121,24 @@ export class TopicsComponent implements OnInit {
       let retData : any = data;
       this.topics = retData.map( topic =>  convertTopic( topic));
     });
+  }
+
+  checkAppearance(topic){
+    console.log(this.userService.getCurrentUser().type, this.userService.getCurrentUser().uid, this.currentCourse.uid);
+    if(this.userService.getCurrentUser().type === 1 && this.userService.getCurrentUser().uid === this.currentCourse.uid){
+      return true;
+    }
+    else{
+      if(new Date(topic.date).getTime() > new Date().getTime()){
+        return false;
+      }
+      else if( !topic.date){
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
   }
 }
 
