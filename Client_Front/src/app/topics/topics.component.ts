@@ -91,14 +91,15 @@ export class TopicsComponent implements OnInit {
 
   addTopic(topic){
     this.dataService.addTopicToCourse(topic, this.route.snapshot.params['cid']).subscribe( data =>{
-      this.topics = data;
-        this.topicsToAddList = this.topicsToAddList.filter( topicToFilter =>  topicToFilter.tid !== topic);
+      let retData : any = data;
+      this.topics = retData.map( topic =>  convertTopic( topic));
+      this.topicsToAddList = this.topicsToAddList.filter( topicToFilter =>  topicToFilter.tid !== topic);
 
-        this.topicsToAddList = this.topicsToAddList.map( topic =>  convertTopic( topic));
+      this.topicsToAddList = this.topicsToAddList.map( topic =>  convertTopic( topic));
 
-        this.dataSource = new MatTableDataSource(this.topicsToAddList);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+      this.dataSource = new MatTableDataSource(this.topicsToAddList);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 
@@ -120,11 +121,11 @@ export class TopicsComponent implements OnInit {
     this.dataService.updateTopic( this.edittingTopic , this.route.snapshot.params['cid']).subscribe( data =>{
       let retData : any = data;
       this.topics = retData.map( topic =>  convertTopic( topic));
+      console.log(this.topics);
     });
   }
 
   checkAppearance(topic){
-    console.log(this.userService.getCurrentUser().type, this.userService.getCurrentUser().uid, this.currentCourse.uid);
     if(this.userService.getCurrentUser().type === 1 && this.userService.getCurrentUser().uid === this.currentCourse.uid){
       return true;
     }
