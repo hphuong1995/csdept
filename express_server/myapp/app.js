@@ -74,10 +74,12 @@ app.use(function (req, res, next){
 app.use(expressValidator());
 
 const checkAdmRole = function(req, res, next) {
+  console.log(req.user);
   if(req.user && req.user.type === 1){
     next();
   }
   else{
+    console.log("notauthenticated");
     res.status(403).send({message: 'Forbidden'});
   }
 }

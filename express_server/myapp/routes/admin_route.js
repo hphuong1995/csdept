@@ -37,4 +37,40 @@ router.delete('/courses/:cid/topics/:tid', function(req, res, next) {
   });
 });
 
+router.delete('/courses/:cid/', function(req, res, next) {
+  db.deleteCourse(req.params.cid,(courses,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(courses);
+    }
+  });
+});
+
+router.put('/courses/:cid/', function(req, res, next) {
+  db.editCourse(req.body,(courses,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(courses);
+    }
+  });
+});
+
+router.post('/courses', function(req, res, next) {
+  console.log(req.body);
+  db.createNewCourse(req.body ,(courses,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(courses);
+    }
+  });
+});
+
+
+
 module.exports = router;

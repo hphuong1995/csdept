@@ -45,4 +45,16 @@ export class DataService {
   removeTopicFromCourse(tid : string, cid : string){
     return this.http.delete('api/v1/admin/courses/' + cid + "/topics/" + tid);
   }
+
+  createNewCourse(courseName: string, user_id : string){
+    return this.http.post('api/v1/admin/courses', {course_name: courseName, uid : user_id});
+  }
+
+  deleteCourse(cid: string){
+    return this.http.delete('api/v1/admin/courses/' + cid);
+  }
+
+  editCourse(newCourseName: string, cid: string){
+    return this.http.put('api/v1/admin/courses/' + cid, {course_name: newCourseName, cid : cid});
+  }
 }

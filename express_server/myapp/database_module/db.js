@@ -86,7 +86,6 @@ exports.getAllTopicsFiltered = function(cid, callback){
 }
 
 exports.addTopicToCourse = function( topicObject, callback){
-  console.log(topicObject);
 	var query = "INSERT INTO course_topic (topic_tid, course_cid) VALUES ?";
   let values = [
       [topicObject.tid, topicObject.cid]
@@ -108,6 +107,33 @@ exports.addTopicToCourse = function( topicObject, callback){
     }
 	});
 }
+
+
+
+exports.createNewCourse = function( newCourse, callback){
+	var query = "INSERT INTO course (course_name, user_uid) VALUES ?";
+  let values = [
+      [newCourse.course_name, newCourse.uid]
+  ];
+	con.query(query, [values], function(err, newTopic, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      query = "Select cid, course_name, fullName, uid From course JOIN user ON user_uid = uid";
+      con.query(query, function(err, allCourses, fields){
+        if(err){
+          callback(null, err);
+        }
+        else{
+          callback(allCourses);
+        }
+      });
+    }
+	});
+}
+
+
 
 exports.updateTopic = function( topicObject, cid,  callback){
   topicObject.date = new Date(topicObject.date).toString();
@@ -143,6 +169,28 @@ exports.updateTopic = function( topicObject, cid,  callback){
 	});
 }
 
+exports.editCourse = function( newCourseInfo,  callback){
+  let query = "UPDATE course SET course_name = '" +  newCourseInfo.course_name + "'" +
+            " WHERE cid =" + newCourseInfo.cid;
+
+	con.query(query, function(err, newCourse, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      query = "Select cid, course_name, fullName, uid From course JOIN user ON user_uid = uid";
+
+      con.query(query, function(err, allCourses, fields){
+        if(err){
+          callback(null, err);
+        }
+        else{
+          callback(allCourses);
+        }
+      });
+    }
+	});
+}
 
 exports.addTopicToCourse = function( topicObject, callback){
   console.log(topicObject);
@@ -184,6 +232,28 @@ exports.removeTopicFromCourse = function( tid, cid,  callback){
         }
         else{
           callback(allTopics);
+        }
+      });
+    }
+	});
+}
+
+exports.deleteCourse = function(cid,  callback){
+  let query = "DELETE FROM course WHERE cid = " + cid;
+
+	con.query(query, function(err, newTopic, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      query = "Select cid, course_name, fullName, uid From course JOIN user ON user_uid = uid";
+
+      con.query(query, function(err, allCourses, fields){
+        if(err){
+          callback(null, err);
+        }
+        else{
+          callback(allCourses);
         }
       });
     }

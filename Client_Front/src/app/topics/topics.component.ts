@@ -35,8 +35,6 @@ export class TopicsComponent implements OnInit {
 
   editTopicForm: FormGroup;
 
-  _this = this;
-
   displayedColumns: string[] = ['topicName', 'action'];
 
   dataSource: MatTableDataSource<Topic>;

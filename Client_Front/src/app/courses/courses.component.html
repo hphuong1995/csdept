@@ -4,18 +4,113 @@
       <tr>
         <th scope="col">Course Name</th>
         <th scope="col">Instructor</th>
-        <th scope="col"></th>
+        <th scope="col">
+          <button *ngIf="this.userService.getCurrentUser().type === 1" id="addCourse" class="btn btn-primary"  data-toggle="modal" data-target="#addCourseModal">Create Course</button>
+        </th>
       </tr>
     </thead>
     <tbody *ngIf="courses">
       <tr scope="row" *ngFor="let course of courses">
         <td>{{course.course_name}}</td>
         <td>{{course.fullName}}</td>
-        <td align="right">
+        <td >
           <button type="button" class="btn btn-outline-success" (click)="setCurrentCourses(course)" [routerLink]="[course.cid, 'topics']">Select</button>
+          <button *ngIf="this.userService.getCurrentUser().uid === course.uid" type="button" class="btn btn-outline-success" (click)="startEdit(course)" data-toggle="modal" data-target="#editCourseModal">Edit</button>
+          <button *ngIf="this.userService.getCurrentUser().uid === course.uid" type="button" class="btn btn-outline-danger" (click)="removeCourse(course)">Remove</button>
         </td>
       </tr>
     </tbody>
   </table>
   <button id="next" class="btn btn-primary" style='margin-top: 10px;' (click)="back()">Back</button>
+</div>
+
+
+<!-- Modal -->
+<div id="addCourseModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content" id="detailBox">
+      <div class="modal-header">
+        <h5 class="modal-title"> Edit Topic</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createCourseForm" (ngSubmit)="onSubmit()">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr scope="row">
+                <td> <label for="topic_name">Course Name :</label> </td>
+                <td> <input type="text" class="form-control" formControlName="course_name_create"></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+        <!-- <div class="text-danger">
+          <small style='font-style: italic;' *ngIf="missingInputForCreatingItem">Please specify Course Name</small>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal" (click)="submitCreateCourse()">
+        Create
+        </button>
+        <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal">
+        Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="editCourseModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content" id="detailBox">
+      <div class="modal-header">
+        <h5 class="modal-title"> Edit Topic</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editCourseForm" (ngSubmit)="onSubmit()">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr scope="row">
+                <td> <label for="topic_name">Course Name :</label> </td>
+                <td> <input type="text" class="form-control" formControlName="course_name_edit"></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+        <!-- <div class="text-danger">
+          <small style='font-style: italic;' *ngIf="missingInputForCreatingItem">Please specify Course Name</small>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal" (click)="submitEditCourse()">
+        Save
+        </button>
+        <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal">
+        Back
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
