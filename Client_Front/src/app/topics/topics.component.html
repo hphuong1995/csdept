@@ -6,7 +6,7 @@
         <th scope="col">Topic</th>
         <th *ngIf="this.userService.getCurrentUser().uid === this.currentCourse.uid" scope="col">Available Date</th>
         <th  *ngIf="this.userService.getCurrentUser().uid === this.currentCourse.uid" scope="col">
-          <button id="addTopic" class="btn btn-primary" (click)="addTopic()">Add Topic</button>
+          <button id="addTopic" class="btn btn-primary"  data-toggle="modal" data-target="#addTopicModal">Add Topic</button>
         </th>
       </tr>
     </thead>
@@ -18,8 +18,7 @@
         </td>
         <td >
           <button type="button" class="btn btn-outline-success" (click)="setCurrentTopic(topic.topic_name)" [routerLink]="[topic.tid, 'questions']">Select</button>
-          <button type="button" class="btn btn-outline-success" (click)="editTopic(topic)">Edit</button>
-
+          <button type="button" data-toggle="modal" data-target="#editTopicModal" class="btn btn-outline-success" (click)="editTopic(topic)">Edit</button>
         </td>
       </tr>
     </tbody>
@@ -29,13 +28,13 @@
 
 
 <!-- Modal -->
-<div id="addCompanyModal" class="modal fade" role="dialog">
+<div id="addTopicModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content" id="detailBox">
       <div class="modal-header">
-        <h5 class="modal-title"> Add Company</h5>
+        <h5 class="modal-title"> Add Topic</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
@@ -47,16 +46,16 @@
           <table mat-table [dataSource]="dataSource" matSort>
 
             <!-- Code Column -->
-            <ng-container matColumnDef="companyName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Company Name </th>
-              <td mat-cell *matCellDef="let row"> {{row.shortName}} </td>
+            <ng-container matColumnDef="topicName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Topic Name </th>
+              <td mat-cell *matCellDef="let row"> {{row.topic_name}} </td>
             </ng-container>
 
             <!-- Color Column -->
             <ng-container matColumnDef="action">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
               <td mat-cell *matCellDef="let row" >
-                <button type="button" class="btn btn-outline-success" data-dismiss="modal" (click)="addCompany(row.cid)">Add</button>
+                <button type="button" class="btn btn-outline-success"  (click)="addTopic(row.tid)">Add</button>
                </td>
             </ng-container>
 
@@ -71,6 +70,55 @@
       </div>
       <div class="modal-footer">
 
+        <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal">
+        Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="editTopicModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" id="detailBox">
+      <div class="modal-header">
+        <h5 class="modal-title"> Edit Topic</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editTopicForm" (ngSubmit)="onSubmit()">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr scope="row">
+                <td> <label for="topic_name">Topic Name :</label> </td>
+                <td> <input type="text" class="form-control" formControlName="topic_name"></td>
+                <td></td>
+              </tr>
+              <tr scope="row">
+                <td>  <label for="date">Date:</label> </td>
+                <td>  <input  type="text" class="form-control" formControlName="date"> </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal" (click)="saveEditAccount()">
+        Save
+        </button>
         <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal">
         Back
         </button>

@@ -60,6 +60,54 @@ exports.getOptionsOfMultQuestion = function(qid, callback){
 	});
 }
 
+exports.getAllTopicsFiltered = function(cid, callback){
+	var query = "Select tid From Topic JOIN course_topic ON tid = topic_tid WHERE course_cid =" + cid;
+	con.query(query, function(err, topicToFiler, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      query = "Select * from topic";
+      con.query(query, function(err, allTopics, fields){
+        if(err){
+          callback(null, err);
+        }
+        else{
+          let arrayTid = [];
+          topicToFiler.forEach(topic =>{
+            arrayTid.push(topic.tid);
+          });
+          allTopics = allTopics.filter( topic => !arrayTid.includes(topic.tid));
+          callback(allTopics);
+        }
+      });
+    }
+	});
+}
+
+exports.addTopicToCourse = function( topicObject, callback){
+  console.log(topicObject);
+	var query = "INSERT INTO course_topic (topic_tid, course_cid) VALUES ?";
+  let values = [
+      [topicObject.tid, topicObject.cid]
+  ];
+	con.query(query, [values], function(err, newTopic, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      query = "Select * From Topic JOIN course_topic ON tid = topic_tid WHERE course_cid =" + topicObject.cid;
+      con.query(query, function(err, allTopics, fields){
+        if(err){
+          callback(null, err);
+        }
+        else{
+          callback(allTopics);
+        }
+      });
+    }
+	});
+}
 
 module.exports.getUserByLogin = (username, password, callback) => {
   let query = "SELECT * from User WHERE username ='" + username + "'";

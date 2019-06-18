@@ -20,6 +20,7 @@ var MySQLStore = require('express-mysql-session')(session);
 
 var auth = require('./routes/authenticate');
 var route = require('./routes/route');
+var admin_route = require('./routes/admin_route');
 
 var app = express();
 
@@ -72,10 +73,19 @@ app.use(function (req, res, next){
 
 app.use(expressValidator());
 
+const checkAdmRole = function(req, res, next) {
+  if(req.user && req.user.type === 1){
+    next();
+  }
+  else{
+    res.status(403).send({message: 'Forbidden'});
+  }
+}
 
 //Route
 app.use('/', auth);
 app.use('/api/v1/',  route);
+app.use('/api/v1/admin', checkAdmRole, admin_route);
 app.use("/**", (req, res, next) => {
   root( req, res, next );
 });

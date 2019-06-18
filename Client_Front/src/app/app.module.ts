@@ -14,6 +14,8 @@ import { LoginComponent } from './login/login.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MaterialModule} from "./app.material.module";
 
 
 @NgModule({
@@ -32,11 +34,11 @@ import { RegisterComponent } from './register/register.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule ,
     BrowserModule,
-
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

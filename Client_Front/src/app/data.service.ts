@@ -29,4 +29,12 @@ export class DataService {
   getOptionsOfMultQuestion( qid: string){
     return this.http.get('api/v1/questions/' + qid + "/options");
   }
+
+  getAllTopics(cid :string){
+    return this.http.get('api/v1/topics?cid=' + cid);
+  }
+
+  addTopicToCourse( tid: string, cid: string ){
+    return this.http.post('api/v1/admin/courses/' + cid + "/topics", {tid: tid, cid: cid});
+  }
 }

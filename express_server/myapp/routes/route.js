@@ -44,6 +44,18 @@ router.get('/questions/:qid/options', function(req, res, next) {
   });
 });
 
+router.get('/topics', function(req, res, next) {
+  db.getAllTopicsFiltered(req.query.cid,(topics,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(topics);
+    }
+  });
+});
+
+
 function authenticationMiddleware(){
   return (req,res,next) =>{
     if( req.isAuthenticated()) return next();
