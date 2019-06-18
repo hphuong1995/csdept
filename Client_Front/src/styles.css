@@ -1,2 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+/* Mat Autocomplete on Modal Fixes */ .cdk-overlay-container {z-index: 999999 !important;}

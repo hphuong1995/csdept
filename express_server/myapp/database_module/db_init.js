@@ -68,6 +68,7 @@ const COURSE_TOPIC_TABLE =
 "CREATE TABLE `csdept`.`course_topic` (\
   `course_cid` INT NOT NULL,\
   `topic_tid` INT NOT NULL,\
+  `date` VARCHAR(100) NULL,\
   INDEX `course_cid_idx` (`course_cid` ASC) ,\
   INDEX `topic_tid_idx` (`topic_tid` ASC) ,\
   CONSTRAINT `course_cid`\
@@ -80,7 +81,6 @@ const COURSE_TOPIC_TABLE =
   REFERENCES `csdept`.`topic` (`tid`)\
   ON DELETE NO ACTION\
   ON UPDATE NO ACTION);";
-
 
 
 /*
@@ -305,19 +305,25 @@ initQueue.unshift((connection, initQueue) => {
 
 initQueue.unshift((connection, initQueue) => {
     let next = initQueue.pop();
-    let query = "INSERT INTO course_topic (course_cid, topic_tid) VALUES ?";
+    let query = "INSERT INTO course_topic (course_cid, topic_tid, date) VALUES ?";
     let values = [
-      [1,1],
-      [1,2],
-      [1,3],
-      [3,1],
-      [2,4],
-      [4,4]
+      [1, 1, "Tue Jun 04 2019 00:00:00 GMT-0500 (Central Daylight Time)"],
+      [1, 2, "Mon Jun 24 2019 00:00:00 GMT-0500 (Central Daylight Time)"],
+  
     ];
     connection.query(query, [values], (err, res, fields) => {
         if (err) rollbackAndExit(connection, err);
-
-        next(connection, initQueue);
+        query = "INSERT INTO course_topic (course_cid, topic_tid) VALUES ?";
+        values = [
+          [1,3],
+          [3,1],
+          [2,4],
+          [4,4]
+        ];
+        connection.query(query, [values], (err, res, fields) => {
+            if (err) rollbackAndExit(connection, err);
+            next(connection, initQueue);
+          });
     });
 });
 

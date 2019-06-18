@@ -109,6 +109,41 @@ exports.addTopicToCourse = function( topicObject, callback){
 	});
 }
 
+exports.updateTopic = function( topicObject, cid,  callback){
+  topicObject.date = new Date(topicObject.date).toString();
+  let query = "UPDATE course_topic SET date = '" +  topicObject.date + "'" +
+            " WHERE topic_tid =" + topicObject.tid + " AND course_cid=" + cid;
+
+	con.query(query, function(err, newTopic, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      let query = "UPDATE topic SET topic_name = '" +  topicObject.topic_name + "'" +
+                " WHERE tid =" + topicObject.tid;
+
+      con.query(query, function(err, allTopics, fields){
+        if(err){
+          callback(null, err);
+        }
+        else{
+          query = "Select * From Topic JOIN course_topic ON tid = topic_tid WHERE course_cid =" + cid;
+
+          con.query(query, function(err, allTopics, fields){
+            if(err){
+              callback(null, err);
+            }
+            else{
+              callback(allTopics);
+            }
+          });
+        }
+      });
+    }
+	});
+}
+
+
 module.exports.getUserByLogin = (username, password, callback) => {
   let query = "SELECT * from User WHERE username ='" + username + "'";
     con.query(query, (err, results) => {

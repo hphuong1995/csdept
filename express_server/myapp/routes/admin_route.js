@@ -5,7 +5,6 @@ var expressValidator = require('express-validator');
 
 
 router.post('/courses/:cid/topics', function(req, res, next) {
-  console.log("here");
   db.addTopicToCourse(req.body,(topics,err)=>{
     if(err){
         res.status(500).send(err);
@@ -16,7 +15,16 @@ router.post('/courses/:cid/topics', function(req, res, next) {
   });
 });
 
-
+router.put('/courses/:cid/topics/:tid', function(req, res, next) {
+  db.updateTopic(req.body, req.params.cid,(topics,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(topics);
+    }
+  });
+});
 
 
 module.exports = router;

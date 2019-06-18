@@ -37,4 +37,8 @@ export class DataService {
   addTopicToCourse( tid: string, cid: string ){
     return this.http.post('api/v1/admin/courses/' + cid + "/topics", {tid: tid, cid: cid});
   }
+
+  updateTopic( updatedTopic : any, cid: string){
+    return this.http.put('api/v1/admin/courses/' + cid + "/topics/" + updatedTopic.tid, updatedTopic);
+  }
 }

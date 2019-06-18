@@ -7,11 +7,14 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 
 export interface Topic {
   tid: number
   topic_name: string
+  date: string
+  formatedDate: string
 }
 
 @Component({
@@ -24,6 +27,11 @@ export class TopicsComponent implements OnInit {
   currentCourse : any;
   currentInstructorId : string;
   topicsToAddList: any;
+
+  edittingTopic: any = {
+    topic_name: "",
+    date: ""
+  };
 
   editTopicForm: FormGroup;
 
@@ -47,11 +55,11 @@ export class TopicsComponent implements OnInit {
 
     this.editTopicForm = this.formBuilder.group({
       topic_name: ['', Validators.required],
-      date: ['']
     });
 
     this.dataService.getTopics(this.route.snapshot.params['cid']).subscribe(data => {
-      this.topics = data;
+      let retData : any = data;
+      this.topics = retData.map( topic =>  convertTopic( topic));
       this.dataService.getAllTopics(this.route.snapshot.params['cid']).subscribe( topics=>{
         let retData : any = topics;
 
@@ -93,11 +101,50 @@ export class TopicsComponent implements OnInit {
         this.dataSource.sort = this.sort;
     });
   }
+
+  topicDateChange(type: string, event: MatDatepickerInputEvent<Date>): void {
+    console.log(event.value);
+    this.edittingTopic.date = event.value;
+  }
+
+  editTopic(topic){
+    console.log(topic);
+    this.edittingTopic = topic;
+    this.editTopicForm = this.formBuilder.group({
+      topic_name: [this.edittingTopic.topic_name, Validators.required],
+    });
+  }
+
+  get editTopicFormControl() { return this.editTopicForm.controls; }
+
+  submitEditTopic(){
+    this.edittingTopic.topic_name = this.editTopicFormControl.topic_name.value;
+    this.dataService.updateTopic( this.edittingTopic , this.route.snapshot.params['cid']).subscribe( data =>{
+      let retData : any = data;
+      this.topics = retData.map( topic =>  convertTopic( topic));
+    });
+  }
 }
 
 function convertTopic(topic): Topic {
+  let formatedDate = "";
+  if(!topic.date){
+    formatedDate = "Not Specified";
+  }
+  else{
+    let topicDate = new Date(topic.date).getTime();
+    let currentDate = new Date().getTime();
+    if(topicDate <= currentDate){
+      formatedDate = "Currently Available";
+    }
+    else{
+      formatedDate = "Available on " + topic.date.substr(0,16);
+    }
+  }
   return {
     tid: topic.tid,
-    topic_name: topic.topic_name
+    topic_name: topic.topic_name,
+    date : topic.date,
+    formatedDate: formatedDate
   };
 }
