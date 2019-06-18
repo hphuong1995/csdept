@@ -26,5 +26,15 @@ router.put('/courses/:cid/topics/:tid', function(req, res, next) {
   });
 });
 
+router.delete('/courses/:cid/topics/:tid', function(req, res, next) {
+  db.removeTopicFromCourse(req.params.tid , req.params.cid,(topics,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(topics);
+    }
+  });
+});
 
 module.exports = router;

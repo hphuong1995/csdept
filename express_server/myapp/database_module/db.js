@@ -144,6 +144,54 @@ exports.updateTopic = function( topicObject, cid,  callback){
 }
 
 
+exports.addTopicToCourse = function( topicObject, callback){
+  console.log(topicObject);
+	var query = "INSERT INTO course_topic (topic_tid, course_cid) VALUES ?";
+  let values = [
+      [topicObject.tid, topicObject.cid]
+  ];
+	con.query(query, [values], function(err, newTopic, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      query = "Select * From Topic JOIN course_topic ON tid = topic_tid WHERE course_cid =" + topicObject.cid;
+      con.query(query, function(err, allTopics, fields){
+        if(err){
+          callback(null, err);
+        }
+        else{
+          callback(allTopics);
+        }
+      });
+    }
+	});
+}
+
+exports.removeTopicFromCourse = function( tid, cid,  callback){
+  let query = "DELETE FROM course_topic WHERE course_cid =" + cid + " AND topic_tid = " + tid;
+
+	con.query(query, function(err, newTopic, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      query = "Select * From Topic JOIN course_topic ON tid = topic_tid WHERE course_cid =" + cid;
+
+      con.query(query, function(err, allTopics, fields){
+        if(err){
+          callback(null, err);
+        }
+        else{
+          callback(allTopics);
+        }
+      });
+    }
+	});
+}
+
+
+
 module.exports.getUserByLogin = (username, password, callback) => {
   let query = "SELECT * from User WHERE username ='" + username + "'";
     con.query(query, (err, results) => {

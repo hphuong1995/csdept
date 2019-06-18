@@ -19,6 +19,7 @@
         <td  align="right" *ngIf="checkAppearance(topic)">
           <button type="button" class="btn btn-outline-success" (click)="setCurrentTopic(topic.topic_name)" [routerLink]="[topic.tid, 'questions']">Select</button>
           <button *ngIf="this.userService.getCurrentUser().uid === this.currentCourse.uid" type="button" data-toggle="modal" data-target="#editTopicModal" class="btn btn-outline-success" (click)="editTopic(topic)">Edit</button>
+          <button *ngIf="this.userService.getCurrentUser().uid === this.currentCourse.uid" type="button" class="btn btn-outline-danger" (click)="remove(topic)">Remove</button>
         </td>
       </tr>
     </tbody>

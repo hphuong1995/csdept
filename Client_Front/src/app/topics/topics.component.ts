@@ -121,7 +121,13 @@ export class TopicsComponent implements OnInit {
     this.dataService.updateTopic( this.edittingTopic , this.route.snapshot.params['cid']).subscribe( data =>{
       let retData : any = data;
       this.topics = retData.map( topic =>  convertTopic( topic));
-      console.log(this.topics);
+    });
+  }
+
+  remove(topic){
+    this.dataService.removeTopicFromCourse(topic.tid, this.route.snapshot.params['cid']).subscribe( data =>{
+      let retData : any = data;
+      this.topics = retData.map( topic =>  convertTopic( topic));
     });
   }
 
