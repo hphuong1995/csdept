@@ -1,12 +1,22 @@
 <div class='container'id ="ques" style='margin-top: 10px; white-space:pre-wrap;' >
-  <h4>Course: {{currentCourse}} - Topic: {{currentTopic}}</h4>
+  <h4>Course: {{currentCourse.course_name}} - {{currentCourse.fullName}} - Topic: {{currentTopic}}</h4>
 
   <div *ngIf="currentQuestion">
     <h5 >Question ( {{displayCurrentQues}} / {{questionSet.length}} ):</h5>
     <form [formGroup]="answerForm" *ngIf="currentQuestion" >
 
+      <div *ngIf="currentQuestion.type_id === 2">
+        <h6 [innerHTML]="currentQuestion.formated_Content"></h6>
+        <div class="form-group">
+          <label for="file">Choose File</label>
+          <input type="file"
+                 id="file"
+                 (change)="handleFileInput($event.target.files)">
+        </div>
+      </div>
+
       <div *ngIf="currentQuestion.type_id === 1">
-        <h6 [innerHTML]="currentQuestion.content"></h6>
+        <h6 [innerHTML]="currentQuestion.formated_Content"></h6>
           <div class="form-group">
             <label for="{{currentQuestion.question}}">Answer:</label>
             <div *ngFor="let option of currentOptionsSet">
@@ -17,7 +27,7 @@
       </div>
 
       <div *ngIf="currentQuestion.type_id === 0">
-        <h6 [innerHTML]="currentQuestion.content"></h6>
+        <h6 [innerHTML]="currentQuestion.formated_Content"></h6>
           <div class="form-group">
             <label for="{{currentQuestion.question}}">Answer:</label>
             <textarea formControlName="answer" class="form-control" id="{{currentQuestion.qid}}" rows="3"></textarea>
@@ -39,6 +49,68 @@
     <button id="backToTopic" routerLink="../.." class="btn btn-primary" style='margin-top: 10px;' *ngIf="(curQuesNum === questionSet.length - 1) && currentQuestion">Topic List</button>
   </div>
   <div>
+    <button style='margin-top: 10px; margin-right: 10px' *ngIf="this.userService.getCurrentUser().type === 1" type="button" data-toggle="modal" data-target="#editQuestionModal" class="btn btn-primary" (click)="editQuestion()">Edit</button>
     <button class="btn btn-primary" style='margin-top: 10px;' (click)="back()">Back</button>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="editQuestionModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content" id="detailBox">
+      <div class="modal-header">
+        <h5 class="modal-title"> Edit Question</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editQuestionForm" (ngSubmit)="onSubmit()">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr scope="row">
+                <td> <label for="question_content">Question Content:</label> </td>
+                <td> <textarea class="form-control" formControlName="question_content" rows="8" cols="80"></textarea></td>
+                <td></td>
+              </tr>
+              <tr scope="row">
+                <td> <label for="question_key">Question Key:</label>  </td>
+                <td>
+                  <input type="text" formControlName="question_key" class="form-control">
+                </td>
+                <td></td>
+              </tr>
+              <tr *ngIf="currentQuestion.type_id === 1" scope="row">
+                <td> <label for="question_options">Options:</label>  </td>
+                <td>
+                  <input type="text" formControlName="question_opt_1" class="form-control">
+                  <input type="text" formControlName="question_opt_2" class="form-control">
+                  <input type="text" formControlName="question_opt_3" class="form-control">
+                  <input type="text" formControlName="question_opt_4" class="form-control">
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal" (click)="submitEditQuestion()">
+        Save
+        </button>
+        <button type="button"class="btn btn-primary"  color="primary"mat-raised-button data-dismiss="modal">
+        Back
+        </button>
+      </div>
+    </div>
   </div>
 </div>

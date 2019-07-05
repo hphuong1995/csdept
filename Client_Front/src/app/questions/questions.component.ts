@@ -3,6 +3,7 @@ import { DataService } from '../data.service';
 import {ActivatedRoute} from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Location} from '@angular/common';
+import { UserService } from '../user.service';
 
 
 
@@ -23,19 +24,33 @@ export class QuestionsComponent implements OnInit {
   currentSelectedOpt: string = '';
 
   currentOptionsSet: any;
-
+  editQuestionForm: FormGroup;
 
   constructor(  private _location: Location,
                 private formBuilder : FormBuilder,
                 private dataService: DataService,
-                private route:ActivatedRoute,) { }
+                private route:ActivatedRoute,
+                private userService: UserService) { }
 
-  get f() { return this.answerForm.controls; }
+  get answerFormControl() { return this.answerForm.controls; }
+  get editFormControl() {return this.editQuestionForm.controls;}
 
   ngOnInit() {
+    this.currentQuestion = {};
+    this.questionSet = [];
+
     this.answerForm = this.formBuilder.group({
       multAnswer: [''],
       answer: [''],
+    });
+
+    this.editQuestionForm = this.formBuilder.group({
+      question_content: [''],
+      question_key: [''],
+      question_opt_1: [''],
+      question_opt_2 : [''],
+      question_opt_3: [''],
+      question_opt_4: ['']
     });
 
     this.currentTopic = JSON.parse(JSON.stringify(localStorage.getItem('currentTopic')));
@@ -45,8 +60,9 @@ export class QuestionsComponent implements OnInit {
        this.questionSet = data;
        //console.log(this.questionSet[0].content);
        this.questionSet.forEach( (question) => {
-         question.content = "<pre>" + question.content.replace( /[\\]n/g, '<br>') + "<pre>";
+         question.formated_Content = "<pre>" + question.content.replace( /[\\]n/g, '<br>') + "<pre>";
          //question.content = this.domSanitizer.bypassSecurityTrustHtml(question.content);
+         console.log(question.formated_Content);
        });
        this.currentQuestion =  this.questionSet[this.curQuesNum];
        if(this.currentQuestion.type_id === 1){
@@ -58,13 +74,29 @@ export class QuestionsComponent implements OnInit {
     });
   }
 
+  setEditFormValue(){
+    this.editFormControl.question_content.setValue(this.currentQuestion.content);
+    this.editFormControl.question_key.setValue(this.currentQuestion.question_key);
+    if(this.currentOptionsSet && this.currentOptionsSet.length === 4){
+      this.editFormControl.question_opt_1.setValue(this.currentOptionsSet[0].opt);
+      this.editFormControl.question_opt_2.setValue(this.currentOptionsSet[1].opt);
+      this.editFormControl.question_opt_3.setValue(this.currentOptionsSet[2].opt);
+      this.editFormControl.question_opt_4.setValue(this.currentOptionsSet[3].opt);
+    }
+  }
+
+  editQuestion(){
+    this.setEditFormValue();
+  }
+
+
   nextQuestion(){
     this.curQuesNum = this.curQuesNum + 1;
     this.currentQuestion =  this.questionSet[this.curQuesNum];
     this.correctAnswer = 0;
     this.displayCurrentQues = this.displayCurrentQues+1;
-    this.f.answer.setValue('');
-    this.f.answer.enable();
+    this.answerFormControl.answer.setValue('');
+    this.answerFormControl.answer.enable();
     if(this.currentQuestion.type_id === 1){
       this.dataService.getOptionsOfMultQuestion(this.currentQuestion.qid).subscribe( data =>{
         let retData = data;
@@ -75,10 +107,10 @@ export class QuestionsComponent implements OnInit {
 
   submit(){
     if(this.currentQuestion.type_id === 0){
-      var answer = this.f.answer.value;
+      var answer = this.answerFormControl.answer.value;
       answer = answer.trim();
       if(answer === this.currentQuestion.question_key){
-        this.f.answer.disable();
+        this.answerFormControl.answer.disable();
         this.correctAnswer = 2;
       }
       else{

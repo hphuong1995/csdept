@@ -278,7 +278,8 @@ initQueue.unshift((connection, initQueue) => {
     let values = [
         ['Specify output of this code\nString test = \"Hello World\";\nSystem.out.println(test.substring(4))', 3, 'o World', 0],
         ['Specify output of this code\nString test = \"Test String\";\nSystem.out.println(test.substring(2,5))', 3, 'st S', 0 ],
-        ['Fill in the blank. \n___ numArray = new int[5];', 1, 'int[]', 1]
+        ['Fill in the blank. \n___ numArray = new int[5];', 1, 'int[]', 1],
+        ['Write a flush function for a String', 3, "", 2]
     ];
     connection.query(query, [values], (err, res, fields) => {
         if (err) rollbackAndExit(connection, err);
@@ -309,7 +310,7 @@ initQueue.unshift((connection, initQueue) => {
     let values = [
       [1, 1, "Tue Jun 04 2019 00:00:00 GMT-0500 (Central Daylight Time)"],
       [1, 2, "Mon Jun 24 2019 00:00:00 GMT-0500 (Central Daylight Time)"],
-  
+
     ];
     connection.query(query, [values], (err, res, fields) => {
         if (err) rollbackAndExit(connection, err);
