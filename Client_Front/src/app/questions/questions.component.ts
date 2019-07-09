@@ -67,9 +67,9 @@ export class QuestionsComponent implements OnInit {
       question_opt_4: ['']
     });
 
-    this.currentTopic = JSON.parse(JSON.stringify(localStorage.getItem('currentTopic')));
-    this.currentCourse = JSON.parse(JSON.stringify(localStorage.getItem('currentCourse')));
-
+    this.currentTopic = JSON.parse(localStorage.getItem('currentTopic'));
+    this.currentCourse = JSON.parse(localStorage.getItem('currentCourse'));
+    console.log(this.currentCourse);
     this.dataService.getQuestions(this.route.snapshot.params['cid'], this.route.snapshot.params['tid']).subscribe(data => {
        this.questionSet = data;
        //console.log(this.questionSet[0].content);

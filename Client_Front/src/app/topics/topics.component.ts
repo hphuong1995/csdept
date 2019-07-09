@@ -72,7 +72,7 @@ export class TopicsComponent implements OnInit {
   }
 
   setCurrentTopic(currentTopic :string){
-    localStorage.setItem("currentTopic", currentTopic);
+    localStorage.setItem("currentTopic", JSON.stringify(currentTopic));
   }
 
   back() {
