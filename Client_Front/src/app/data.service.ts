@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -15,6 +16,14 @@ export class DataService {
 
   getCourses(){
     return this.http.get('/api/v1/courses');
+  }
+
+  postFile(fileToUpload: File, qid: string){
+    const formData: FormData = new FormData();
+    //console.log(fileToUpload);
+    formData.append('fileKey', fileToUpload, fileToUpload.name);
+    console.log(formData);
+    return this.http.post("/api/v1/questions/" + qid, formData,{headers: {'enctype': 'multipart/form-data'}});
   }
 
   getTopics(cid : string){

@@ -16,7 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from "./app.material.module";
-
+import {FileUploadModule} from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,8 @@ import {MaterialModule} from "./app.material.module";
     ReactiveFormsModule,
     FormsModule ,
     BrowserModule,
-    MaterialModule
+    MaterialModule,
+    FileUploadModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Location} from '@angular/common';
 import { UserService } from '../user.service';
-
+import { FileSelectDirective, FileUploader} from 'ng2-file-upload';
 
 
 @Component({
@@ -22,6 +22,12 @@ export class QuestionsComponent implements OnInit {
   displayCurrentQues = 1;
   answerForm: FormGroup;
   currentSelectedOpt: string = '';
+  codeQuestionResponse: string = '';
+
+  fileToUpload: File = null;
+  uploader:FileUploader = new FileUploader({url:'http://localhost:4200/api/v1/questions/uploadAnswer'});
+
+  attachmentList:any = [];
 
   currentOptionsSet: any;
   editQuestionForm: FormGroup;
@@ -30,7 +36,15 @@ export class QuestionsComponent implements OnInit {
                 private formBuilder : FormBuilder,
                 private dataService: DataService,
                 private route:ActivatedRoute,
-                private userService: UserService) { }
+                private userService: UserService) {
+
+                  this.uploader.onCompleteItem = (item:any, response:any , status:any, headers:any) => {
+            this.attachmentList.push(JSON.parse(response));
+            console.log(this.attachmentList);
+            this.codeQuestionResponse = this.attachmentList[0].output;
+        }
+
+                 }
 
   get answerFormControl() { return this.answerForm.controls; }
   get editFormControl() {return this.editQuestionForm.controls;}
@@ -62,7 +76,7 @@ export class QuestionsComponent implements OnInit {
        this.questionSet.forEach( (question) => {
          question.formated_Content = "<pre>" + question.content.replace( /[\\]n/g, '<br>') + "<pre>";
          //question.content = this.domSanitizer.bypassSecurityTrustHtml(question.content);
-         console.log(question.formated_Content);
+         //console.log(question.formated_Content);
        });
        this.currentQuestion =  this.questionSet[this.curQuesNum];
        if(this.currentQuestion.type_id === 1){
@@ -126,8 +140,16 @@ export class QuestionsComponent implements OnInit {
         this.correctAnswer = 1;
       }
     }
-
   }
+
+  // handleFileInput(files : FileList){
+  //   this.fileToUpload = files.item(0);
+  //   this.dataService.postFile(this.fileToUpload,this.currentQuestion.qid).subscribe(data => {
+  //     // do something, if upload success
+  //     let retData : any = data;
+  //     this.codeQuestionResponse = retData.output;
+  //   });
+  // }
 
   selectOption( opt ){
     this.currentSelectedOpt = opt;

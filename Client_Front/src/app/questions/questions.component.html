@@ -11,7 +11,11 @@
           <label for="file">Choose File</label>
           <input type="file"
                  id="file"
-                 (change)="handleFileInput($event.target.files)">
+                 ng2FileSelect
+                 [uploader]="uploader">
+        </div>
+        <h5 *ngIf="codeQuestionResponse !== ''">Output:</h5>
+        <div *ngIf="codeQuestionResponse !== ''" style="width: 100%; height: 500px; overflow-y: scroll;">{{codeQuestionResponse}}
         </div>
       </div>
 
@@ -43,7 +47,8 @@
       <strong>Incorrect!</strong>
     </div>
     <div>
-      <button (click)="submit()" type="submit" class="btn btn-primary" style='margin-top: 10px;' *ngIf="currentQuestion">Submit</button>
+      <button *ngIf="currentQuestion.type_id === 2" type="button" class="btn btn-primary" style='margin-top: 10px;' (click)="uploader.uploadAll()">Upload</button>
+      <button  (click)="submit()" type="submit" class="btn btn-primary" style='margin-top: 10px;' *ngIf="currentQuestion && currentQuestion.type_id !== 2">Submit</button>
     </div>
     <button id="next" (click)="nextQuestion()" class="btn btn-primary" style='margin-top: 10px;' *ngIf="(curQuesNum < questionSet.length - 1) && currentQuestion">Next Question</button>
     <button id="backToTopic" routerLink="../.." class="btn btn-primary" style='margin-top: 10px;' *ngIf="(curQuesNum === questionSet.length - 1) && currentQuestion">Topic List</button>

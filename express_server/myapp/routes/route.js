@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var db = require('./../database_module/db');
 var expressValidator = require('express-validator');
+var multer = require('multer');
+
+const exec = require('child_process').exec;
+
 
 router.get('/courses', function(req, res, next) {
   //console.log(req.isAuthenticated());
@@ -52,6 +56,38 @@ router.get('/topics', function(req, res, next) {
     else{
       res.status(200).send(topics);
     }
+  });
+});
+
+var currentDirectory = '';
+
+var store = multer.diskStorage({
+    destination:function(req,file,cb){
+      currentDirectory = file.originalname.substr(0,file.originalname.length -5);
+      console.log('./codes/' + file.originalname.substr(0,file.originalname.length -5) + '/src/student');
+        cb(null, './codes/' + file.originalname.substr(0,file.originalname.length -5) + '/src/student');
+    },
+    filename:function(req,file,cb){
+        cb(null, file.originalname);
+    }
+});
+
+var upload = multer({storage:store}).single('file');
+
+router.post('/questions/uploadAnswer', function(req, res, next) {
+  upload(req,res,function(err){
+    if(err){
+      return res.status(501).json({error: err});
+    }
+
+    var yourscript = exec('sh ./codes/test.sh /codes/' + currentDirectory + '/src', (error, stdout, stderr) => {
+        console.log(stdout);
+        console.log(stderr);
+        if (error !== null) {
+            console.log(`exec error: ${error}`);
+        }
+        res.json({output: stdout});
+    });
   });
 });
 
