@@ -60,7 +60,6 @@ router.put('/courses/:cid/', function(req, res, next) {
 });
 
 router.post('/courses', function(req, res, next) {
-  console.log(req.body);
   db.createNewCourse(req.body ,(courses,err)=>{
     if(err){
         res.status(500).send(err);
@@ -71,6 +70,15 @@ router.post('/courses', function(req, res, next) {
   });
 });
 
-
+router.put('/questions/:qid', function(req, res, next) {
+  db.editQuestion(req.body ,(question,err)=>{
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+      res.status(200).send(question);
+    }
+  });
+});
 
 module.exports = router;

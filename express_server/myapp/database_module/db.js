@@ -25,7 +25,6 @@ exports.getAllTopics = (cid, callback) => {
 exports.getAllQuestionByTopicId = (courseId, topicId, callback) => {
 	let query = "Select * From question WHERE topic_question_tid ='" + topicId + "'";
 
-  console.log(query);
   con.query(query, (err, results) => {
     if(err) {
         callback(undefined, new Error(err.message, -10));
@@ -47,6 +46,53 @@ exports.getAllCourses = function(callback){
     }
 	});
 }
+
+
+exports.editQuestion = function(editObj, callback){
+  console.log(editObj);
+  let query = "";
+  if(editObj.question_type_id === 0 || editObj.question_type_id === 1){
+    query = "UPDATE question SET content = '" + editObj.question_content + "', question_key ='" + editObj.question_key + "' WHERE qid = " + editObj.qid + ";";
+  }
+  else if( editObj.question_type_id === 2){
+      query = "UPDATE question SET content = '" + editObj.question_content + "' WHERE qid = " + editObj.qid +  ";";
+  }
+	con.query(query, function(err, question, fields){
+    if(err){
+      callback(null, err);
+    }
+    else{
+      if( editObj.question_type_id === 1){
+        query = "DELETE from options WHERE question_qid =" + editObj.qid + ";";
+        con.query(query, function(err, question, fields){
+          if(err){
+            callback(null, err);
+          }
+
+          query = "INSERT into options (question_qid, opt) VALUES ?";
+          let values = [
+            [editObj.qid, editObj.question_options[0]],
+            [editObj.qid, editObj.question_options[1]],
+            [editObj.qid, editObj.question_options[2]],
+            [editObj.qid, editObj.question_options[3]]
+          ];
+
+          con.query(query, [values], function(err, newTopic, fields){
+            if(err){
+              callback(null, err);
+            }
+
+            callback({success: 'true'});
+          });
+        });
+      }
+      else{
+        callback({success: 'true'});
+      }
+    }
+	});
+}
+
 
 exports.getOptionsOfMultQuestion = function(qid, callback){
 	var query = "Select * FROM options WHERE question_qid =" + qid;
@@ -193,7 +239,6 @@ exports.editCourse = function( newCourseInfo,  callback){
 }
 
 exports.addTopicToCourse = function( topicObject, callback){
-  console.log(topicObject);
 	var query = "INSERT INTO course_topic (topic_tid, course_cid) VALUES ?";
   let values = [
       [topicObject.tid, topicObject.cid]

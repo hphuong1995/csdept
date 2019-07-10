@@ -66,4 +66,8 @@ export class DataService {
   editCourse(newCourseName: string, cid: string){
     return this.http.put('api/v1/admin/courses/' + cid, {course_name: newCourseName, cid : cid});
   }
+
+  editQuestion(editObj: any){
+    return this.http.put('api/v1/admin/questions/' + editObj.qid, editObj);
+  }
 }

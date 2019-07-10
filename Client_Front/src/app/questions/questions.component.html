@@ -5,7 +5,7 @@
     <h5 >Question ( {{displayCurrentQues}} / {{questionSet.length}} ):</h5>
     <form [formGroup]="answerForm" *ngIf="currentQuestion" >
 
-      <div *ngIf="currentQuestion.type_id === 2">
+      <div *ngIf="currentQuestion && currentQuestion.type_id === 2">
         <h6 [innerHTML]="currentQuestion.formated_Content"></h6>
         <div class="form-group">
           <label for="file">Choose File</label>
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div *ngIf="currentQuestion.type_id === 1">
+      <div *ngIf=" currentQuestion && currentQuestion.type_id === 1">
         <h6 [innerHTML]="currentQuestion.formated_Content"></h6>
           <div class="form-group">
             <label for="{{currentQuestion.question}}">Answer:</label>
@@ -30,7 +30,7 @@
           </div>
       </div>
 
-      <div *ngIf="currentQuestion.type_id === 0">
+      <div *ngIf=" currentQuestion && currentQuestion.type_id === 0">
         <h6 [innerHTML]="currentQuestion.formated_Content"></h6>
           <div class="form-group">
             <label for="{{currentQuestion.question}}">Answer:</label>
@@ -47,7 +47,7 @@
       <strong>Incorrect!</strong>
     </div>
     <div>
-      <button *ngIf="currentQuestion.type_id === 2" type="button" class="btn btn-primary" style='margin-top: 10px;' (click)="uploader.uploadAll()">Upload</button>
+      <button *ngIf=" currentQuestion && currentQuestion.type_id === 2" type="button" class="btn btn-primary" style='margin-top: 10px;' (click)="uploader.uploadAll()">Upload</button>
       <button  (click)="submit()" type="submit" class="btn btn-primary" style='margin-top: 10px;' *ngIf="currentQuestion && currentQuestion.type_id !== 2">Submit</button>
     </div>
     <button id="next" (click)="nextQuestion()" class="btn btn-primary" style='margin-top: 10px;' *ngIf="(curQuesNum < questionSet.length - 1) && currentQuestion">Next Question</button>
@@ -87,14 +87,14 @@
                 <td> <textarea class="form-control" formControlName="question_content" rows="8" cols="80"></textarea></td>
                 <td></td>
               </tr>
-              <tr scope="row">
+              <tr *ngIf="currentQuestion && (currentQuestion.type_id === 1 || currentQuestion.type_id === 0)" scope="row">
                 <td> <label for="question_key">Question Key:</label>  </td>
                 <td>
                   <input type="text" formControlName="question_key" class="form-control">
                 </td>
                 <td></td>
               </tr>
-              <tr *ngIf="currentQuestion.type_id === 1" scope="row">
+              <tr *ngIf="currentQuestion && currentQuestion.type_id === 1" scope="row">
                 <td> <label for="question_options">Options:</label>  </td>
                 <td>
                   <input type="text" formControlName="question_opt_1" class="form-control">

@@ -40,7 +40,6 @@ export class QuestionsComponent implements OnInit {
 
                   this.uploader.onCompleteItem = (item:any, response:any , status:any, headers:any) => {
             this.attachmentList.push(JSON.parse(response));
-            console.log(this.attachmentList);
             this.codeQuestionResponse = this.attachmentList[0].output;
         }
 
@@ -69,7 +68,6 @@ export class QuestionsComponent implements OnInit {
 
     this.currentTopic = JSON.parse(localStorage.getItem('currentTopic'));
     this.currentCourse = JSON.parse(localStorage.getItem('currentCourse'));
-    console.log(this.currentCourse);
     this.dataService.getQuestions(this.route.snapshot.params['cid'], this.route.snapshot.params['tid']).subscribe(data => {
        this.questionSet = data;
        //console.log(this.questionSet[0].content);
@@ -79,7 +77,7 @@ export class QuestionsComponent implements OnInit {
          //console.log(question.formated_Content);
        });
        this.currentQuestion =  this.questionSet[this.curQuesNum];
-       if(this.currentQuestion.type_id === 1){
+       if(this.currentQuestion && this.currentQuestion.type_id === 1){
          this.dataService.getOptionsOfMultQuestion(this.currentQuestion.qid).subscribe( data =>{
            let retData = data;
            this.currentOptionsSet = retData;
@@ -142,14 +140,49 @@ export class QuestionsComponent implements OnInit {
     }
   }
 
-  // handleFileInput(files : FileList){
-  //   this.fileToUpload = files.item(0);
-  //   this.dataService.postFile(this.fileToUpload,this.currentQuestion.qid).subscribe(data => {
-  //     // do something, if upload success
-  //     let retData : any = data;
-  //     this.codeQuestionResponse = retData.output;
-  //   });
-  // }
+  submitEditQuestion(){
+    let editObj: any;
+    editObj = {
+      question_content: this.editFormControl.question_content.value,
+      qid: this.currentQuestion.qid,
+      question_type_id: this.currentQuestion.type_id
+    }
+    if(this.currentQuestion.type_id === 0){
+      editObj.question_key = this.editFormControl.question_key.value;
+    }
+
+    if(this.currentQuestion.type_id === 1){
+      editObj.question_key = this.editFormControl.question_key.value;
+      editObj.question_options = [];
+      editObj.question_options.push(this.editFormControl.question_opt_1.value);
+      editObj.question_options.push(this.editFormControl.question_opt_2.value);
+      editObj.question_options.push(this.editFormControl.question_opt_3.value);
+      editObj.question_options.push(this.editFormControl.question_opt_4.value);
+    }
+
+    this.dataService.editQuestion(editObj).subscribe( data =>{
+      console.log(data);
+      let retData :any = data;
+      if(retData.success === "true"){
+        this.currentQuestion.content = this.editFormControl.question_content.value;
+        this.currentQuestion.formated_Content = "<pre>" + this.currentQuestion.content.replace( /[\\]n/g, '<br>') + "<pre>";
+
+        if(this.currentQuestion.type_id === 0){
+          this.currentQuestion.question_key = this.editFormControl.question_key.value;
+        }
+        if(this.currentQuestion.type_id === 1){
+          this.currentQuestion.question_key = this.editFormControl.question_key.value;
+          console.log(this.currentOptionsSet);
+          this.currentOptionsSet = [];
+          this.currentOptionsSet.push({question_qid: this.currentQuestion.qid, opt: this.editFormControl.question_opt_1.value});
+          this.currentOptionsSet.push({question_qid: this.currentQuestion.qid, opt: this.editFormControl.question_opt_2.value});
+          this.currentOptionsSet.push({question_qid: this.currentQuestion.qid, opt: this.editFormControl.question_opt_3.value});
+          this.currentOptionsSet.push({question_qid: this.currentQuestion.qid, opt: this.editFormControl.question_opt_4.value});
+        }
+
+      }
+    });
+  }
 
   selectOption( opt ){
     this.currentSelectedOpt = opt;
