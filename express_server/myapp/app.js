@@ -61,7 +61,7 @@ var sessionStore = new MySQLStore(options);
 app.use( session( {
     cookie: {
         httpOnly: false,
-        maxAge: 10 * 60 * 1000,
+        maxAge: 10 * 60 * 10000,
     },
     resave: false,
     secret: "csdept2019",

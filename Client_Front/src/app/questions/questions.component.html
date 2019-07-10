@@ -8,7 +8,6 @@
       <div *ngIf="currentQuestion && currentQuestion.type_id === 2">
         <h6 [innerHTML]="currentQuestion.formated_Content"></h6>
         <div class="form-group">
-          <label for="file">Choose File</label>
           <input type="file"
                  id="file"
                  ng2FileSelect
@@ -54,7 +53,7 @@
     <button id="backToTopic" routerLink="../.." class="btn btn-primary" style='margin-top: 10px;' *ngIf="(curQuesNum === questionSet.length - 1) && currentQuestion">Topic List</button>
   </div>
   <div>
-    <button style='margin-top: 10px; margin-right: 10px' *ngIf="this.userService.getCurrentUser().type === 1" type="button" data-toggle="modal" data-target="#editQuestionModal" class="btn btn-primary" (click)="editQuestion()">Edit</button>
+    <button style='margin-top: 10px; margin-right: 10px' *ngIf="this.userService.getCurrentUser().type === 1 && this.userService.getCurrentUser().uid === this.currentCourse.uid" type="button" data-toggle="modal" data-target="#editQuestionModal" class="btn btn-primary" (click)="editQuestion()">Edit</button>
     <button class="btn btn-primary" style='margin-top: 10px;' (click)="back()">Back</button>
   </div>
 </div>
