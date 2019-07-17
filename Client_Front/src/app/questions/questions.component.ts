@@ -24,6 +24,8 @@ export class QuestionsComponent implements OnInit {
   currentSelectedOpt: string = '';
   codeQuestionResponse: string = '';
 
+  hint : string = "Note:\nWhite space: The corresponding lines are in common. That is, either the lines are identical, or the difference is ignored because of one of the --ignore options \n'|': The corresponding lines differ, and they are either both complete or both incomplete.\n'<': The files differ and only the first file contains the line.\n'>': The files differ and only the second file contains the line."
+
   fileToUpload: File = null;
   uploader:FileUploader = new FileUploader({url:'http://localhost:4200/api/v1/questions/uploadAnswer'});
 
@@ -72,9 +74,15 @@ export class QuestionsComponent implements OnInit {
        this.questionSet = data;
        //console.log(this.questionSet[0].content);
        this.questionSet.forEach( (question) => {
-         question.formated_Content = "<pre>" + question.content.replace( /[\\]n/g, '<br>') + "<pre>";
+         question.question_code = question.content.split('`')[1];
+         question.question_content = question.content.split('`')[0];
+         console.log(question.question_code);
+         if(question.question_code){
+           question.formated_content = "<pre>" + question.question_code.replace( /[\\]n/g, '<br>') + "<pre>";
+         }
+         console.log(question.formated_content);
          //question.content = this.domSanitizer.bypassSecurityTrustHtml(question.content);
-         //console.log(question.formated_Content);
+
        });
        this.currentQuestion =  this.questionSet[this.curQuesNum];
        if(this.currentQuestion && this.currentQuestion.type_id === 1){

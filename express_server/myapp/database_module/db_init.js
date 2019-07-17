@@ -276,9 +276,9 @@ initQueue.unshift((connection, initQueue) => {
     let next = initQueue.pop();
     let query = "INSERT INTO question  (content, topic_question_tid, question_key, type_id) VALUES ?";
     let values = [
-        ['Specify output of this code\nString test = \"Hello World\";\nSystem.out.println(test.substring(4))', 3, 'o World', 0],
-        ['Specify output of this code\nString test = \"Test String\";\nSystem.out.println(test.substring(2,5))', 3, 'st S', 0 ],
-        ['Fill in the blank. \n___ numArray = new int[5];', 1, 'int[]', 1],
+        ['Specify output of this code\n`String test = \"Hello World\";\nSystem.out.println(test.substring(4))`', 3, 'o World', 0],
+        ['Specify output of this code\n`String test = \"Test String\";\nSystem.out.println(test.substring(2,5))`', 3, 'st S', 0 ],
+        ['Fill in the blank. \n`___ numArray = new int[5];', 1, 'int[]`', 1],
         ['Write a flush function for a String', 3, "", 2]
     ];
     connection.query(query, [values], (err, res, fields) => {
