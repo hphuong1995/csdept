@@ -35,7 +35,7 @@ for FILE in ./*.txt; do
       sh ../parse_shor.sh $FILE $DIR
     elif [ "$TYPE" == "code" ]
     then
-      echo "File $File is not supported yet."
+      sh ../parse_code.sh $FILE $DIR
     else
       echo "FILE $FILE has unrecognizable question type. Please check the question format."
     fi

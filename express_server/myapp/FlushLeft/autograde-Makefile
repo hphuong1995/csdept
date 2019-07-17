@@ -1,0 +1,15 @@
+#
+# Makefile that gets executed by Autolab when running a job. This Makefile
+# extracts the autograde.tar contents, copies in the student's submission, and
+# then kickstarts the driver.sh script to run the tests.
+#
+PROG = FlushLeft
+
+default:
+	@tar xf autograde.tar
+	@cp $(PROG).java $(PROG)-grading/student/
+	@(cd $(PROG)-grading/; ./driver.sh)
+
+clean:
+	rm -rf $(PROG)-grading
+

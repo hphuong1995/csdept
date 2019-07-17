@@ -39,20 +39,18 @@ echo "$QUES"
 
 #CID=$(echo "SELECT cid FROM Course WHERE cid = 1" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
 
-TID=$(echo "SELECT tid FROM Topic WHERE tname ='$TOPIC'" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
+TID=$(echo "SELECT tid FROM topic WHERE topic_name ='$TOPIC'" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
 
 # if this is a new topic, create new Topic
 if [ -z "$TID" ]
 then
-	echo "INSERT INTO Topic (tname) VALUES ('$TOPIC');" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
+	echo "INSERT INTO topic (topic_name) VALUES ('$TOPIC');" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
 fi
-TID=$(echo "SELECT tid FROM Topic WHERE tname ='$TOPIC';" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
+TID=$(echo "SELECT tid FROM topic WHERE topic_name ='$TOPIC';" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
 #echo "$TID"
 
 
 #Insert question into Question table
-printf "INSERT INTO Question (content, tid, typeId, qKey) VALUES ('\\n Hello \\n newline', $TID, 1, '$KEY')" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
+printf "INSERT INTO question (content, topic_question_tid, type_id, question_key) VALUES ('$QUES', $TID, 0, '$KEY')" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
 
 #Insert option to Option table
-
-

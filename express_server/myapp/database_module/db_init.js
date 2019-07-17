@@ -41,7 +41,7 @@ const QUESTION_TABLE =
   `qid` INT NOT NULL AUTO_INCREMENT,\
   `content` VARCHAR(10000) NULL,\
   `topic_question_tid` INT NOT NULL,\
-  `question_key` VARCHAR(5000) NOT NULL,\
+  `question_key` VARCHAR(5000) NULL,\
   `type_id` INT NOT NULL,\
   PRIMARY KEY (`qid`),\
   INDEX `topic_question_tid_idx` (`topic_question_tid` ASC) ,\

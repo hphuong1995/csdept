@@ -40,25 +40,24 @@ done < "$FILE"
 
 #CID=$(echo "SELECT cid FROM Course WHERE cid = 1" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
 
-TID=$(echo "SELECT tid FROM Topic WHERE tname ='$TOPIC'" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
+TID=$(echo "SELECT tid FROM topic WHERE topic_name ='$TOPIC'" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
 
 # if this is a new topic, create new Topic
 if [ -z "$TID" ]
 then
-	echo "INSERT INTO Topic (tname) VALUES ('$TOPIC');" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
+	echo "INSERT INTO topic (topic_name) VALUES ('$TOPIC');" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
 fi
-TID=$(echo "SELECT tid FROM Topic WHERE tname ='$TOPIC';" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
+TID=$(echo "SELECT tid FROM Topic WHERE topic_name ='$TOPIC';" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
 #echo "$TID"
 
 #Insert question into Question table
-echo "INSERT INTO Question (content, tid, typeId, qKey) VALUES ('$QUES', $TID, 2, '$KEY')" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
+echo "INSERT INTO question (content, topic_question_tid, type_id, question_key) VALUES ('$QUES', $TID, 1, '$KEY')" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
 
 #Insert option to Option table
-QID=$(echo "SELECT qid FROM Question WHERE content ='$QUES' AND qKey='$KEY';" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
+QID=$(echo "SELECT qid FROM Question WHERE content ='$QUES' AND question_key='$KEY';" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N)
 #echo "$QID"
 for i in "${OPT[@]}"
 do
-   echo "INSERT INTO Options (qid, opt) VALUES ('$QID', '$i') ;" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
+   echo "INSERT INTO options (question_qid, opt) VALUES ('$QID', '$i') ;" | mysql "csdept" -u "root" -p"Hphuong131464" -s -N
    # or do whatever with individual element of the array
 done
-
