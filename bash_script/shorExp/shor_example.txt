@@ -1,0 +1,4 @@
+type:shor
+topic:Arrays 1D
+ques:Fill in the blank so that there are no errors. \\n___ array1; \\narray1 = new String[4];
+key:String[]
