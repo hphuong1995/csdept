@@ -10,7 +10,6 @@ var passport = require('passport');
 
 router.post('/api/v1/register', function( req, res, next){
   req.checkBody('username', 'Username field can not be empty').notEmpty();
-  req.checkBody('email', 'Username field can not be empty').notEmpty();
   req.checkBody('password', 'Username field can not be empty').notEmpty();
   req.checkBody('fullName', 'Username field can not be empty').notEmpty();
 
@@ -21,14 +20,12 @@ router.post('/api/v1/register', function( req, res, next){
   }
 
   var username = req.body.username;
-  var email = req.body.email;
   var password = req.body.password;
   var fullName = req.body.fullName;
 
   bcrypt.hash(password, saltRounds, function(err, hash) {
     // Store hash in your password DB.
-    console.log(hash);
-    db.userRegister(username, hash, email, fullName, 0, (user, error) => {
+    db.userRegister(username, hash ,fullName, 0, (user, error) => {
       if(error) throw error;
       res.status(200).send(user);
     });

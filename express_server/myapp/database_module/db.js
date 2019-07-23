@@ -1,9 +1,10 @@
 var con = require('./dbConnect');
+const uuid = require('uuid/v1');
 
-module.exports.userRegister = (username, password, email, fullName, type, callback) => {
+module.exports.userRegister = (username, password, fullName, type, callback) => {
   //console.log(password);
-  var query = "INSERT INTO User ( username, email, password, fullName, type) VALUES (?,?,?,?,?)";
-  con.query(query,[username, email,password,fullName, type], function(errors, results, field){
+  var query = "INSERT INTO User (uid, username, password, fullName, type) VALUES (?,?,?,?,?)";
+  con.query(query,[uuid(), username ,password,fullName, type], function(errors, results, field){
     if(errors) throw errors;
     callback({'valid': true}, undefined);
   });

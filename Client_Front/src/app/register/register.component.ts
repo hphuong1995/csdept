@@ -32,7 +32,6 @@ export class RegisterComponent implements OnInit {
   onSubmit(){
     if(this.f.password.value === this.f.re_password.value){
       var newUser = {'username' : this.f.username.value,
-                     'email': this.f.email.value,
                      'password':this.f.password.value,
                      'fullName' : this.f.fullName.value};
       this.userService.userRegister( newUser ).subscribe( data =>{
