@@ -19,9 +19,12 @@ else
 fi
 
 # go through all txt file in unzipped directory
+
+# TODO start transaction
 for FILE in ./*.txt; do
   UPLOADED_DIR="../uploaded_question"
   #cp $FILE $UPLOADED_DIR
+  echo "Processing $FILE"
   LINE=$(head -n 1 $FILE)
   CODE=$( echo $LINE | cut -d':' -f 1)
   if [ "$CODE" == "type" ]
@@ -43,4 +46,23 @@ for FILE in ./*.txt; do
     echo "File $FILE has incorrect format."
   fi
 
+  echo "$FILE has been uploaded"
 done
+
+for file in */ ; do
+  if [[ -d "$file" && ! -L "$file" ]]; then
+    zip -r code.zip $file
+    cp code.zip ./../../codes
+    cd ./../../codes
+    unzip code.zip
+    rm code.zip
+    cd ./../bash_script
+    cd $DIR
+    rm code.zip
+  fi;
+done
+
+cd ..
+rm -r __MACOSX
+rm -r $DIR
+# Sucessful OF transacetion => commit transaction

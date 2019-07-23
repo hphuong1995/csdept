@@ -1,3 +1,0 @@
-type:code
-topic:String Method
-ques:Write a flush function for a String
